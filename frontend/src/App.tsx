@@ -491,7 +491,7 @@ export default function App() {
               name={
                 customerMode
                   ? (data?.customers[0]?.name ?? "Customer")
-                  : "Demo Agent"
+                  : manager ? "Demo Manager" : "Demo Agent"
               }
               small
             />
@@ -499,7 +499,7 @@ export default function App() {
               <strong>
                 {customerMode
                   ? (data?.customers[0]?.name ?? "Customer")
-                  : "Demo Agent"}
+                  : manager ? "Demo Manager" : "Demo Agent"}
               </strong>
               <span>{roles[session.role]} · Demo</span>
             </div>
@@ -1212,6 +1212,8 @@ export default function App() {
                 key={r}
                 className={session.role === r ? "selected" : ""}
                 onClick={() => {
+                  setData(null);
+                  setLoading(true);
                   setSession(sessionFor(r));
                   navigate("overview");
                   setRoleModal(false);
