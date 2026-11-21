@@ -1,0 +1,98 @@
+[
+  {
+    "product_id": "P001",
+    "name": "Wireless Mouse M20",
+    "price_pkr": 2790,
+    "category": "peripherals",
+    "stock_units": 18,
+    "warranty_months": 12
+  },
+  {
+    "product_id": "P002",
+    "name": "Mechanical Keyboard K60",
+    "price_pkr": 8990,
+    "category": "peripherals",
+    "stock_units": 13,
+    "warranty_months": 12
+  },
+  {
+    "product_id": "P003",
+    "name": "USB-C 65W Charger",
+    "price_pkr": 4590,
+    "category": "charging",
+    "stock_units": 30,
+    "warranty_months": 6
+  },
+  {
+    "product_id": "P004",
+    "name": "Bluetooth Earbuds E2",
+    "price_pkr": 6490,
+    "category": "audio",
+    "stock_units": 12,
+    "warranty_months": 12
+  },
+  {
+    "product_id": "P005",
+    "name": "Noise-Cancelling Headphones H5",
+    "price_pkr": 13990,
+    "category": "audio",
+    "stock_units": 9,
+    "warranty_months": 12
+  },
+  {
+    "product_id": "P006",
+    "name": "Power Bank 20000mAh",
+    "price_pkr": 5990,
+    "category": "charging",
+    "stock_units": 20,
+    "warranty_months": 6
+  },
+  {
+    "product_id": "P007",
+    "name": "USB-C Cable 2m",
+    "price_pkr": 1290,
+    "category": "charging",
+    "stock_units": 85,
+    "warranty_months": 6
+  },
+  {
+    "product_id": "P008",
+    "name": "1080p Webcam W10",
+    "price_pkr": 7490,
+    "category": "peripherals",
+    "stock_units": 7,
+    "warranty_months": 12
+  },
+  {
+    "product_id": "P009",
+    "name": "Laptop Stand Aluminum",
+    "price_pkr": 3990,
+    "category": "accessories",
+    "stock_units": 24,
+    "warranty_months": 12
+  },
+  {
+    "product_id": "P010",
+    "name": "Portable SSD 500GB",
+    "price_pkr": 13490,
+    "category": "storage",
+    "stock_units": 10,
+    "warranty_months": 12
+  },
+  {
+    "product_id": "P011",
+    "name": "Desk Microphone M1",
+    "price_pkr": 9490,
+    "category": "audio",
+    "stock_units": 8,
+    "warranty_months": 12
+  },
+  {
+    "product_id": "P012",
+    "name": "USB Hub 7-Port",
+    "price_pkr": 3490,
+    "category": "accessories",
+    "stock_units": 16,
+    "warranty_months": 12
+  }
+]
