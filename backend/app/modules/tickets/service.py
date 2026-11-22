@@ -1,7 +1,8 @@
 from fastapi import HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from backend.app.db.models import Ticket
+from backend.db.models import Ticket
+from backend.db.ids import next_prefixed_id
 from backend.app.modules.tickets.repository import TicketRepository
 from backend.app.modules.tickets.schemas import TicketCreate, TicketUpdate
 
@@ -26,9 +27,12 @@ class TicketService:
         return await self.repository.list(customer_id, ticket_status, offset, limit)
 
     async def create(self, payload: TicketCreate) -> Ticket:
-        if await self.repository.get(payload.ticket_id):
-            raise HTTPException(status.HTTP_409_CONFLICT, "Ticket already exists")
-        return await self.repository.create(Ticket(**payload.model_dump()))
+        ticket_id = await next_prefixed_id(
+            self.repository.db, Ticket, Ticket.ticket_id, "T-", 6
+        )
+        return await self.repository.create(
+            Ticket(ticket_id=ticket_id, **payload.model_dump())
+        )
 
     async def update(self, ticket_id: str, payload: TicketUpdate) -> Ticket:
         ticket = await self.get(ticket_id)

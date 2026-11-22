@@ -1,7 +1,8 @@
 from fastapi import HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from backend.app.db.models import Product
+from backend.db.models import Product
+from backend.db.ids import next_prefixed_id
 from backend.app.modules.products.repository import ProductRepository
 from backend.app.modules.products.schemas import ProductCreate, ProductUpdate
 
@@ -20,9 +21,12 @@ class ProductService:
         return await self.repository.list(offset, limit)
 
     async def create(self, payload: ProductCreate) -> Product:
-        if await self.repository.get(payload.product_id):
-            raise HTTPException(status.HTTP_409_CONFLICT, "Product already exists")
-        return await self.repository.create(Product(**payload.model_dump()))
+        product_id = await next_prefixed_id(
+            self.repository.db, Product, Product.product_id, "P", 3
+        )
+        return await self.repository.create(
+            Product(product_id=product_id, **payload.model_dump())
+        )
 
     async def update(self, product_id: str, payload: ProductUpdate) -> Product:
         product = await self.get(product_id)

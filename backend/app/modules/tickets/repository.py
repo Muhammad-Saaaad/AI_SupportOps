@@ -1,7 +1,7 @@
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from backend.app.db.models import Ticket
+from backend.db.models import Ticket
 
 
 class TicketRepository:

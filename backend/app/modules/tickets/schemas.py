@@ -4,7 +4,6 @@ from pydantic import BaseModel, ConfigDict, Field
 
 
 class TicketCreate(BaseModel):
-    ticket_id: str = Field(min_length=1, max_length=64)
     customer_id: str = Field(min_length=1, max_length=32)
     order_id: str | None = Field(default=None, max_length=32)
     channel: str = "web_form"
@@ -30,6 +29,7 @@ class TicketUpdate(BaseModel):
 
 
 class TicketResponse(TicketCreate):
+    ticket_id: str
     created_at: datetime
     updated_at: datetime
     model_config = ConfigDict(from_attributes=True)

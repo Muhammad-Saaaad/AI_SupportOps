@@ -2,13 +2,16 @@ import json
 from datetime import datetime
 from pathlib import Path
 
+from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from backend.app.db.models import Customer, Order, Product, Ticket
+from backend.app.core.config import Settings
+from backend.db.models import Customer, Order, Product, Ticket, User
+from backend.app.modules.auth.security import hash_password
 
 
 DATA_DIRECTORY = (
-    Path(__file__).resolve().parents[3] / "CartNest_AI_SupportOps" / "data"
+    Path(__file__).resolve().parents[2] / "CartNest_AI_SupportOps" / "data"
 )
 
 
@@ -46,6 +49,31 @@ async def seed_database(db: AsyncSession) -> None:
                     city=row["city"],
                     account_status=row["account_status"],
                     tier=row["tier"],
+                )
+            )
+    await db.commit()
+
+    admin = await db.execute(select(User).where(User.email == Settings.ADMIN_EMAIL))
+    if admin.scalar_one_or_none() is None:
+        db.add(
+            User(
+                email=Settings.ADMIN_EMAIL,
+                password_hash=hash_password(Settings.ADMIN_PASSWORD),
+                role="admin",
+                customer_id=None,
+            )
+        )
+
+    for row in read_jsonl("customers.jsonl"):
+        email = row["email"].lower()
+        existing = await db.execute(select(User).where(User.email == email))
+        if existing.scalar_one_or_none() is None:
+            db.add(
+                User(
+                    email=email,
+                    password_hash=hash_password(Settings.CUSTOMER_DEFAULT_PASSWORD),
+                    role="customer",
+                    customer_id=row["customer_id"],
                 )
             )
     await db.commit()

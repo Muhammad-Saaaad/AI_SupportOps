@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from backend.app.db.session import get_db
+from backend.db.session import get_db
 from backend.app.modules.orders.schemas import OrderCreate, OrderResponse, OrderUpdate
 from backend.app.modules.orders.service import OrderService
 

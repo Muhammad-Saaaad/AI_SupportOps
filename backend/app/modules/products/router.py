@@ -1,7 +1,8 @@
 from fastapi import APIRouter, Depends, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from backend.app.db.session import get_db
+from backend.db.session import get_db
+from backend.app.modules.auth.dependencies import require_admin
 from backend.app.modules.products.schemas import (
     ProductCreate,
     ProductResponse,
@@ -13,7 +14,11 @@ router = APIRouter(prefix="/products", tags=["Products"])
 
 
 @router.post("", response_model=ProductResponse, status_code=status.HTTP_201_CREATED)
-async def create_product(payload: ProductCreate, db: AsyncSession = Depends(get_db)):
+async def create_product(
+    payload: ProductCreate,
+    db: AsyncSession = Depends(get_db),
+    admin=Depends(require_admin),
+):
     return await ProductService(db).create(payload)
 
 
@@ -29,11 +34,18 @@ async def get_product(product_id: str, db: AsyncSession = Depends(get_db)):
 
 @router.patch("/{product_id}", response_model=ProductResponse)
 async def update_product(
-    product_id: str, payload: ProductUpdate, db: AsyncSession = Depends(get_db)
+    product_id: str,
+    payload: ProductUpdate,
+    db: AsyncSession = Depends(get_db),
+    admin=Depends(require_admin),
 ):
     return await ProductService(db).update(product_id, payload)
 
 
 @router.delete("/{product_id}", status_code=status.HTTP_204_NO_CONTENT)
-async def delete_product(product_id: str, db: AsyncSession = Depends(get_db)):
+async def delete_product(
+    product_id: str,
+    db: AsyncSession = Depends(get_db),
+    admin=Depends(require_admin),
+):
     await ProductService(db).delete(product_id)

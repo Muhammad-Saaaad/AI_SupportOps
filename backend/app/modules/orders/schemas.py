@@ -4,7 +4,6 @@ from pydantic import BaseModel, ConfigDict, Field
 
 
 class OrderCreate(BaseModel):
-    order_id: str = Field(min_length=1, max_length=32)
     customer_id: str = Field(min_length=1, max_length=32)
     product_id: str = Field(min_length=1, max_length=32)
     quantity: int = Field(default=1, ge=1)
@@ -32,4 +31,5 @@ class OrderUpdate(BaseModel):
 
 
 class OrderResponse(OrderCreate):
+    order_id: str
     model_config = ConfigDict(from_attributes=True)

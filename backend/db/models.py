@@ -5,7 +5,7 @@ from datetime import datetime
 from sqlalchemy import Boolean, DateTime, ForeignKey, Integer, JSON, String, Text, func
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from backend.app.db.base import Base
+from backend.db.base import Base
 
 
 class Product(Base):
@@ -136,3 +136,19 @@ class ApprovalRequest(Base):
     reviewed_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
 
     ticket: Mapped[Ticket] = relationship(back_populates="approval_requests")
+
+
+class User(Base):
+    __tablename__ = "users"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    email: Mapped[str] = mapped_column(String(255), unique=True, nullable=False)
+    password_hash: Mapped[str] = mapped_column(String(255), nullable=False)
+    role: Mapped[str] = mapped_column(String(32), nullable=False, default="customer")
+    is_active: Mapped[bool] = mapped_column(Boolean, nullable=False, default=True)
+    customer_id: Mapped[str | None] = mapped_column(
+        ForeignKey("customers.customer_id"), unique=True
+    )
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), nullable=False, server_default=func.now()
+    )

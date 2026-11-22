@@ -2,7 +2,9 @@ from contextlib import asynccontextmanager
 
 from fastapi import Depends, FastAPI
 
-from backend.app.db.session import create_database_tables
+from backend.db.session import create_database_tables
+from backend.app.modules.auth.router import router as auth_router
+from backend.app.modules.admin.router import router as admin_router
 from backend.app.modules.customers.router import router as customers_router
 from backend.app.modules.orders.router import router as orders_router
 from backend.app.modules.products.router import router as products_router
@@ -26,6 +28,8 @@ app.include_router(products_router)
 app.include_router(customers_router)
 app.include_router(orders_router)
 app.include_router(tickets_router)
+app.include_router(auth_router)
+app.include_router(admin_router)
 
 
 @app.get("/")

@@ -2,7 +2,6 @@ from pydantic import BaseModel, ConfigDict, Field
 
 
 class ProductCreate(BaseModel):
-    product_id: str = Field(min_length=1, max_length=32)
     name: str = Field(min_length=1, max_length=255)
     price_pkr: int = Field(ge=0)
     category: str = Field(min_length=1, max_length=100)
@@ -19,4 +18,5 @@ class ProductUpdate(BaseModel):
 
 
 class ProductResponse(ProductCreate):
+    product_id: str
     model_config = ConfigDict(from_attributes=True)

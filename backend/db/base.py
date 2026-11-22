@@ -5,4 +5,4 @@ class Base(DeclarativeBase):
     pass
 
 
-from backend.app.db import models as _models  # noqa: F401, E402
+from backend.db import models as _models  # noqa: F401, E402

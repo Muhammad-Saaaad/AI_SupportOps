@@ -1,7 +1,8 @@
 from fastapi import HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from backend.app.db.models import Customer
+from backend.db.models import Customer
+from backend.db.ids import next_prefixed_id
 from backend.app.modules.customers.repository import CustomerRepository
 from backend.app.modules.customers.schemas import CustomerCreate, CustomerUpdate
 
@@ -20,9 +21,12 @@ class CustomerService:
         return await self.repository.list(offset, limit)
 
     async def create(self, payload: CustomerCreate) -> Customer:
-        if await self.repository.get(payload.customer_id):
-            raise HTTPException(status.HTTP_409_CONFLICT, "Customer already exists")
-        return await self.repository.create(Customer(**payload.model_dump()))
+        customer_id = await next_prefixed_id(
+            self.repository.db, Customer, Customer.customer_id, "C", 4
+        )
+        return await self.repository.create(
+            Customer(customer_id=customer_id, **payload.model_dump())
+        )
 
     async def update(self, customer_id: str, payload: CustomerUpdate) -> Customer:
         customer = await self.get(customer_id)

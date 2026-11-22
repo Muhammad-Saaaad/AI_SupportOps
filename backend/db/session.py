@@ -16,8 +16,8 @@ async def get_db():
 
 
 async def create_database_tables():
-    from backend.app.db.base import Base
-    from backend.app.db.seed import seed_database
+    from backend.db.base import Base
+    from backend.db.seed import seed_database
 
     async with engine.begin() as connection:
         await connection.run_sync(Base.metadata.create_all)

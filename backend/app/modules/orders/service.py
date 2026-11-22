@@ -1,7 +1,8 @@
 from fastapi import HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from backend.app.db.models import Order
+from backend.db.models import Order
+from backend.db.ids import next_prefixed_id
 from backend.app.modules.orders.repository import OrderRepository
 from backend.app.modules.orders.schemas import OrderCreate, OrderUpdate
 
@@ -22,9 +23,12 @@ class OrderService:
         return await self.repository.list(customer_id, offset, limit)
 
     async def create(self, payload: OrderCreate) -> Order:
-        if await self.repository.get(payload.order_id):
-            raise HTTPException(status.HTTP_409_CONFLICT, "Order already exists")
-        return await self.repository.create(Order(**payload.model_dump()))
+        order_id = await next_prefixed_id(
+            self.repository.db, Order, Order.order_id, "CN-", 5
+        )
+        return await self.repository.create(
+            Order(order_id=order_id, **payload.model_dump())
+        )
 
     async def update(self, order_id: str, payload: OrderUpdate) -> Order:
         order = await self.get(order_id)
