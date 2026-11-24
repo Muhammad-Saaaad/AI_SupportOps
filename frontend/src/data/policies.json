@@ -1,0 +1,82 @@
+[
+  {
+    "id": "P-01",
+    "title": "Identity and access",
+    "body": "- A logged-in customer may access **only their own** order and ticket information.\n- The support assistant must verify order ownership using the authenticated customer ID; knowing an order number alone is insufficient.\n- Never disclose address, payment details, or another customer's information."
+  },
+  {
+    "id": "P-02",
+    "title": "Order tracking",
+    "body": "- Order states: `placed`, `processing`, `shipped`, `in_transit`, `delayed`, `delivered`, `cancelled`, `payment_failed`.\n- Tracking numbers are available only after shipment. Never fabricate live carrier updates; the demonstration database is the source of truth.\n- A delayed shipment is referred to a human operations queue; do not promise a new delivery date unless the order record supplies it."
+  },
+  {
+    "id": "P-03",
+    "title": "Standard returns",
+    "body": "- A standard change-of-mind return may be **requested within 7 calendar days of delivery** if the item is unopened and in original packaging.\n- Return eligibility is provisional until a human confirms condition and approves the case.\n- Returned items are inspected before any refund is issued."
+  },
+  {
+    "id": "P-04",
+    "title": "Damaged, defective on arrival, or wrong item",
+    "body": "- Report within **48 hours of delivery** where feasible; reports after 48 hours still go to human review, not auto-rejection.\n- Ask for photos and package details; never request sensitive payment credentials.\n- Replacement/refund action always requires human approval."
+  },
+  {
+    "id": "P-05",
+    "title": "Manufacturer warranty",
+    "body": "- Warranty duration comes from `products.json` (`warranty_months`). Warranty claims require order lookup and human review.\n- No automatic promises that accidental damage is covered."
+  },
+  {
+    "id": "P-06",
+    "title": "Cancellation",
+    "body": "- Only orders in `placed` or `processing` are eligible for a cancellation **request**.\n- A human must approve cancellation before the order is changed.\n- Dispatched orders (`shipped`, `in_transit`, `delayed`, `delivered`) cannot be cancelled by the assistant; explain return or escalation options."
+  },
+  {
+    "id": "P-07",
+    "title": "Payment problems",
+    "body": "- Never ask for passwords, card numbers, OTPs, CVV, or bank credentials.\n- For `payment_failed`, advise safe retry/alternate payment and create a human escalation when account-specific investigation is needed.\n- Never claim a successful charge or refund unless the system records it."
+  },
+  {
+    "id": "P-08",
+    "title": "Responses and actions",
+    "body": "- AI may auto-answer low-risk product FAQs and tracking questions with citations to the catalog/order records.\n- AI may **draft**, but cannot send customer messages without human review during the MVP pilot.\n- AI may never execute refunds, cancellations, replacements, or account changes without human approval and audit recording.\n- Unknown/conflicting policy => escalate; do not guess."
+  },
+  {
+    "id": "P-09",
+    "title": "Service targets (synthetic SLAs)",
+    "body": "- High: initial triage within **1 hour**; Medium: **4 hours**; Low: **1 business day**.\n- These are targets for the demo, not guarantees to customers."
+  },
+  {
+    "id": "KB-001",
+    "title": "Shipping overview",
+    "body": "CartNest ships consumer accessories throughout Pakistan. Demo order shipping status and ETA are shown in the `orders` table. Estimated delivery is not guaranteed. If a shipment is delayed, create an operations follow-up."
+  },
+  {
+    "id": "KB-002",
+    "title": "How to track an order",
+    "body": "Sign in to your CartNest account, open Orders, select the order, and view the tracking number once it has shipped. If no tracking code is present for an unshipped order, explain that dispatch has not yet occurred. Never invent live carrier events."
+  },
+  {
+    "id": "KB-003",
+    "title": "Standard return instructions",
+    "body": "To request a standard return, provide the order number and reason; support checks delivery date against policy P-03. If eligible, staff issue a return-case number and provide packing instructions. Do not promise an immediate refund."
+  },
+  {
+    "id": "KB-004",
+    "title": "Damaged-item reports",
+    "body": "Ask the customer to keep packaging and provide photos of damage, received item, and shipping label. Forward the claim to support review under P-04."
+  },
+  {
+    "id": "KB-005",
+    "title": "Product prices and warranty",
+    "body": "Only use the latest values from `products.json`. Most peripherals and audio items have 12-month warranty; charging products have 6 months in this synthetic catalogue. Verify per product."
+  },
+  {
+    "id": "KB-006",
+    "title": "Cancellations",
+    "body": "Cancellation requests are possible before shipment, but must go to a human for approval (P-06). Once shipped, provide return/escalation guidance rather than promising cancellation."
+  },
+  {
+    "id": "KB-007",
+    "title": "Failed payment",
+    "body": "Check `payment_status` first; a failed payment is not a paid order. Recommend a safe retry or customer support escalation; never request full card numbers or OTPs."
+  }
+]
